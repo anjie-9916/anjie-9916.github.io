@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>挑食貓咪餵食遊戲</title>
+<style>
+    body {
+        font-family: "微軟正黑體", sans-serif;
+        background-color: #fff3e0;
+        text-align: center;
+        padding-top: 50px;
+    }
+    .game-box {
+        background: white;
+        width: 400px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .status {
+        margin-top: 15px;
+        font-size: 18px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="game-box">
+    <h2>🐱 挑食貓咪餵食遊戲</h2>
+    <p>小心！餵錯三次會被貓咪吃掉！</p>
+
+    <h3 id="food">食物</h3>
+
+    <button onclick="feed(true)">餵給貓咪</button>
+    <button onclick="feed(false)">不餵</button>
+
+    <div class="status" id="message"></div>
+    <div class="status">錯誤次數：<span id="fail">0</span> / 3</div>
+</div>
+
+<script>
+const dislikeFoods = [
+    "花椰菜","燙青菜","牛奶","蝦子","章魚","炒蛋","米血","鴨血","蛤蜊","絲瓜",
+    "榴蓮","木瓜","豌豆","芋頭","水餃","餛飩","玉米","打拋豬","咖喱飯",
+    "紅豆","花生粉","肉羹","麥芽牛奶","巧克力","花生醬","滷花椰菜"
+];
+
+const likeFoods = [
+    "火鍋裡的高麗菜","餛飩皮","鍋貼","玉米濃湯","洋蔥","咖喱烏龍麵","味噌湯",
+    "紅豆湯","蒸蛋","煎蛋","魚","魷魚","金針菇","花生","蝦餅","月亮蝦餅",
+    "肉操飯","沒有肉的肉羹","奶茶","巧克力牛奶","巧克力蛋糕",
+    "草莓牛奶","珍珠奶茶"
+];
+
+const allFoods = dislikeFoods.concat(likeFoods);
+
+let currentFood = "";
+let failCount = 0;
+
+function randomFood() {
+    currentFood = allFoods[Math.floor(Math.random() * allFoods.length)];
+    document.getElementById("food").innerText = "🍽️ 食物：" + currentFood;
+}
+
+function feed(give) {
+    const message = document.getElementById("message");
+
+    if (give) {
+        if (likeFoods.includes(currentFood)) {
+            message.innerText = "😺 貓咪吃得很開心！";
+        } else {
+            failCount++;
+            message.innerText = "😾 貓咪超生氣！你餵錯了！";
+        }
+    } else {
+        message.innerText = "🤔 你選擇不餵。";
+    }
+
+    document.getElementById("fail").innerText = failCount;
+
+    if (failCount >= 3) {
+        alert("💀 你餵錯三次，被貓咪吃掉了！");
+        location.reload();
+        return;
+    }
+
+    randomFood();
+}
+
+randomFood();
+</script>
+
+</body>
+</html>
